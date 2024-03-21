@@ -68,51 +68,40 @@ th {
     function submitForm() {
         var fullName = document.getElementById("fullname").value;
         var address = document.getElementById("address").value;
-        var outputDiv = document.getElementById("output");
+        var formData = JSON.parse(localStorage.getItem("formData")) || [];
 
         if (fullName.trim() !== "" && address.trim() !== "") {
-            // Create an array to hold the submitted data
-            var formData = JSON.parse(localStorage.getItem("formData")) || [];
-
-            // Push the new data to the array
+            
             formData.push({fullname: fullName, address: address});
 
-            // Store the updated array in localStorage
+            
             localStorage.setItem("formData", JSON.stringify(formData));
 
-            // Display the submitted data
-            displayFormData();
+            
+            displayFormData(formData);
         } else {
             alert("Please fill in both name and address fields.");
         }
     }
 
-    function displayFormData() {
-        var formData = JSON.parse(localStorage.getItem("formData"));
+    function displayFormData(formData) {
         var outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = ""; 
 
-        // Clear previous content
-        outputDiv.innerHTML = "";
-
-        // Create a table
+        
         var table = document.createElement("table");
         table.innerHTML = "<tr><th>Name</th><th>Address</th></tr>";
 
-        // Populate the table with data
-        if (formData && formData.length > 0) {
-            formData.forEach(function(entry) {
-                var row = table.insertRow();
-                row.insertCell(0).innerText = entry.fullname;
-                row.insertCell(1).innerText = entry.address;
-            });
-        }
+        
+        formData.forEach(function(entry) {
+            var row = table.insertRow();
+            row.insertCell(0).innerText = entry.fullname;
+            row.insertCell(1).innerText = entry.address;
+        });
 
-        // Append the table to the output div
+        
         outputDiv.appendChild(table);
     }
-
-    // Display any previously saved data when the page loads
-    displayFormData();
     </script>
 </body>
 </html>
